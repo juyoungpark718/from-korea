@@ -14,7 +14,18 @@ const getAccessTokenGoogle = (code) =>
         "grant_type": "authorization_code"
       }),
     });
+
 const decodeBase64 = (data) => JSON.parse(Buffer.from(data, 'base64').toString('utf-8'));
+
+const getAccessTokenFB = (code) =>
+    fetch(`https://graph.facebook.com/v10.0/oauth/access_token?`
+      + `client_id=${process.env.FB_OAUTH_CLIENT_ID}&`
+      + `redirect_uri=http%3a%2f%2flocalhost%3a3000%2foauth%2ffacebook%2fredirect&`
+      + `client_secret=${process.env.FB_OAUTH_CLIENT_SECRET}&`
+      + `code=${code}`
+    );
+const getUserInfoFB = (access_token) => 
+    fetch(`https://graph.facebook.com/v10.0/me?fields=id,name,email,picture&access_token=${access_token}`);
 
 const getUserProfileGoogle = _.pipe(
   (req) => req.query.code,
@@ -26,19 +37,33 @@ const getUserProfileGoogle = _.pipe(
   _.pick(["email","name","picture"])
 );
 
-const loginUser = _.pipe(
+const getUserProfileFB = _.pipe(
+  (req) => req.query.code,
+  getAccessTokenFB,
+  data => data.json(),
+  ({access_token}) => access_token,
+  getUserInfoFB,
+  data => data.json(),
+  (user) => { 
+    const { id:fbId, name, picture } = _.pick(["id", "name", "picture"], user);
+    return { fbId, name, picture: picture.data.url };
+  }
+);
+
+const loginUser = (userInfo) => _.go(
+  userInfo,
   userModel.findUser,
   _.head,
   _.ifElse(
     u => u === undefined,
-    () => userModel.createUser(idToken),
+    async () => await userModel.createUser(userInfo),
     _.identity
   ),
-  _.pick(["id", "email", "name", "picture"]),
+  // _.pick(["id", "email", "name", "picture"]),
 );
-
 
 module.exports = {
   getUserProfileGoogle,
+  getUserProfileFB,
   loginUser
 }
