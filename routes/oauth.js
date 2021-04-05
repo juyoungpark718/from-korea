@@ -8,9 +8,19 @@ router.get('/google/redirect', async (req, res, next) => {
     req,
     oauthService.getUserProfileGoogle,
     oauthService.loginUser,
-    (user) => req.session.user = user
+    (user) => req.session.user = user,
   );
   res.redirect("/")
+});
+
+router.get('/facebook/redirect', async (req, res, next) => {
+  await _.go(
+    req,
+    oauthService.getUserProfileFB,
+    oauthService.loginUser,
+    (user) => req.session.user = user,
+  );
+  res.redirect("/");
 });
 
 module.exports = router;
