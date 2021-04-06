@@ -169,3 +169,5 @@ temp/
 knexfile.js
 
 .env
+
+/public/assets/*
