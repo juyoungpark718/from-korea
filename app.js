@@ -6,11 +6,12 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const session = require('express-session');
+const uglifyJs = require("./uglify");
 
 const indexRouter = require('./routes/index');
 const oauthRouter = require("./routes/oauth")
-
 const app = express();
+uglifyJs({ originPrefix: "./assets", distPrefix: "./public/assets", ignoreFile: { css:["global"] } });
 
 app.use(logger('dev'));
 app.use(express.json());
