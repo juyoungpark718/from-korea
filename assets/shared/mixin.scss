@@ -1,0 +1,7 @@
+$computer: 768px;
+
+@mixin computer{
+  @media (min-width: #{$computer}){
+    @content;
+  }
+}

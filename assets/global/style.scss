@@ -1,0 +1,134 @@
+@import "../shared/mixin.scss";
+@import "../shared/variables.scss";
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+}
+
+html{
+  font-size: 62.5%;
+}
+
+.header{
+  width:100vw;
+  height:8rem;
+  font-size:1.2rem; 
+  &__top{
+    display:none;
+    &__menu{
+      display:flex;
+      flex-direction: row;
+    }
+
+    @include computer{
+      display: flex;
+      justify-content: flex-end;
+      height:20%;
+      padding:0 4rem;
+      &__menu{
+        &__item{
+          margin: 0 1rem;
+        }
+      }
+    }
+  }
+
+  &__inner{
+    display:flex;
+    height:100%;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    @include computer{
+      height:80%;
+    }
+  }
+
+  &__log{
+    flex: 1;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__search{
+    flex: 3;
+    &__input{
+      width: 100%;
+      border: 0.1rem solid #afafaf;
+      border-radius: 0.5rem;
+      padding: 0.5rem 0.5rem
+    }
+  }
+
+  &__user{
+
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img{
+      height:3rem;
+      &:hover{
+        cursor: pointer;
+      }
+    }
+
+    @include computer{
+      img{
+        display:none;
+      }
+    }
+  }
+
+  .menu{
+    display: none;
+    position: absolute;
+    justify-content: flex-end;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.5);
+    top:0;
+    left:0;
+
+    &__inner{
+      background-color: white;
+      width:70%;
+    }
+
+    @include computer{
+      display: block;
+      position: relative;
+      width: inherit;
+      height: inherit;
+      &__inner{
+        display: flex;
+        flex-direction: row;
+        width: auto;
+
+        &__item{
+          margin : 0 1rem;
+        }
+
+        &__item--mobile{
+          display: none;
+        }
+
+      }
+    }
+  }
+}
+
+.container{
+  background-color: $bg-color;
+  width: 100vw;
+  height: calc(100vh - 8rem);
+  @include computer{
+    max-width: 120rem;
+    height:100vh;
+    margin: 0 auto;
+  }
+}

@@ -6,12 +6,24 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const session = require('express-session');
+const livereload = require("livereload");
+const connectLivereload = require("connect-livereload");
 const uglifyJs = require("./uglify");
-
 const indexRouter = require('./routes/index');
 const oauthRouter = require("./routes/oauth")
 const app = express();
-uglifyJs({ originPrefix: "./assets", distPrefix: "./public/assets", ignoreFile: { css:["global"] } });
+
+uglifyJs({ originPrefix: "./assets", distPrefix: "./public/assets", ignoreFile: { css:["shared"] } });
+const liveServer = livereload.createServer({
+  exts: ["js", "css"],
+});
+
+liveServer.watch(path.resolve("public/assets"));
+liveServer.server.once("connection", () => {
+  setTimeout(() => {
+    liveServer.refresh("/");
+  }, 100);
+});
 
 app.use(logger('dev'));
 app.use(express.json());
