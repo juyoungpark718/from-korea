@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "start": "nodemon --ignore ./public ./bin/www",
     "migrate": "knex migrate:latest"
   },
   "dependencies": {
@@ -15,10 +15,13 @@
     "fxjs": "^0.21.2",
     "fxsql": "^1.6.0",
     "http-errors": "~1.6.3",
+    "install": "^0.13.0",
     "knex": "^0.95.4",
     "morgan": "~1.9.1",
     "mysql": "^2.18.1",
     "node-fetch": "^2.6.1",
-    "nodemon": "^2.0.7"
+    "node-sass": "^5.0.0",
+    "nodemon": "^2.0.7",
+    "uglify-js": "^3.13.3"
   }
 }
