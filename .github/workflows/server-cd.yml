@@ -3,7 +3,7 @@ name: Node.js Server CD
 on:
   push:
     branches:
-      - master
+      - develop
 
 jobs:
   build:
