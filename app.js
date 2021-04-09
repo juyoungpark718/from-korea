@@ -1,13 +1,14 @@
-require("dotenv").config();
+const path = require('path');
+require("dotenv").config({
+  path: path.join(__dirname, ".env")
+});
 require("./db");
 const createError = require('http-errors');
 const express = require('express');
-const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const session = require('express-session');
 const livereload = require("livereload");
-const connectLivereload = require("connect-livereload");
 const uglifyJs = require("./uglify");
 const indexRouter = require('./routes/index');
 const oauthRouter = require("./routes/oauth")
@@ -18,12 +19,14 @@ const liveServer = livereload.createServer({
   exts: ["js", "css"],
 });
 
-liveServer.watch(path.resolve("public/assets"));
-liveServer.server.once("connection", () => {
-  setTimeout(() => {
-    liveServer.refresh("/");
-  }, 100);
-});
+if(process.env.NODE_ENV === "dev"){
+  liveServer.watch(path.resolve("public/assets"));
+  liveServer.server.once("connection", () => {
+    setTimeout(() => {
+      liveServer.refresh("/");
+    }, 100);
+  });
+}
 
 app.use(logger('dev'));
 app.use(express.json());
