@@ -1,0 +1,35 @@
+@import "../shared/mixin.scss";
+
+.main{
+ .slider{
+   height: 20rem;
+ }
+ .order-manual{
+   height: 20rem;
+ }
+ .product{
+   &__inner{
+     display:flex;
+     flex-direction: row;
+     flex-wrap: wrap;
+     .card{
+       width: calc(100vw / 2);
+       &__header{
+         img{
+           width: 100%;
+         }
+       }
+       &__title{
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+          font-size:1.5rem;
+       }
+
+       @include computer{
+         width: calc(120rem / 4);
+       }
+     }
+   }
+ } 
+}
