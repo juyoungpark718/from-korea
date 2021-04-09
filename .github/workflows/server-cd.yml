@@ -1,0 +1,43 @@
+name: Node.js Server CD
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/master.key
+          chmod 600 ~/.ssh/master.key
+          cat >>~/.ssh/config <<END
+          Host master
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/master.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_USER: ${{ secrets.USERNAME }}
+          SSH_KEY: ${{ secrets.PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.HOST }}
+
+      - name: Run Install & Build
+        run: ssh master 'cd ~/from-korea && git checkout develop && git pull && npm i'
+
+      - name: Reload PM2
+        run: ssh master 'cd ~/from-korea && pm2 restart fromkorea'
