@@ -3,6 +3,8 @@ require("dotenv").config({
   path: path.join(__dirname, ".env")
 });
 require("./db");
+require("./util");
+require("./middleware");
 const createError = require('http-errors');
 const express = require('express');
 const cookieParser = require('cookie-parser');
@@ -11,7 +13,8 @@ const session = require('express-session');
 const livereload = require("livereload");
 const uglifyJs = require("./uglify");
 const indexRouter = require('./routes/index');
-const oauthRouter = require("./routes/oauth")
+const oauthRouter = require("./routes/oauth");
+const loginRouter = require("./routes/login");
 const app = express();
 
 uglifyJs({ originPrefix: "./assets", distPrefix: "./public/assets", ignoreFile: { css:["shared"] } });
@@ -45,6 +48,7 @@ app.use(session({
 
 app.use('/', indexRouter);
 app.use('/oauth', oauthRouter);
+app.use("/user", loginRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -55,7 +59,8 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = process.env.NODE_ENV === 'dev' ? err : {};
+  console.log(res.locals.error);
   // render the error page
   res.status(err.status || 500);
   res.send('error');
