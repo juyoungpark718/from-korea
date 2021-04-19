@@ -1,35 +1,79 @@
 @import "../shared/mixin.scss";
 
-.main{
- .slider{
-   height: 20rem;
- }
- .order-manual{
-   height: 20rem;
- }
- .product{
-   &__inner{
-     display:flex;
-     flex-direction: row;
-     flex-wrap: wrap;
-     .card{
-       width: calc(100vw / 2);
-       &__header{
-         img{
-           width: 100%;
-         }
-       }
-       &__title{
-         white-space: nowrap;
-         overflow: hidden;
-         text-overflow: ellipsis;
-          font-size:1.5rem;
-       }
+.main {
+  &__content {
+    background-color: white;
+    margin: 1rem 0;
+    &:first-child{
+      margin: 0;
+    }
+    &:last-child {
+      margin: 0;
+    }
+  }
+  .slider {
+    img{
+      width: 100%;
+    }
+  }
+  .order-manual {
+    height: 20rem;
+  }
+  .product {
+    padding-bottom: 1rem;
+    &__inner {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      padding: 0 1rem;
+      .card {
+        width: calc(100vw / 2 - 2rem);
+        border: 1px solid #cfcfcf;
+        border-radius: 1rem;
+        background-color: white;
+        margin: 0 0.5rem;
+        &__header {
+          img {
+            border-radius: 1rem;
+            width: 100%;
+          }
+        }
+        &__title {
+          padding: 0.5rem;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-size: 1.5rem;
+        }
+        &__detail{
+          padding: 0 0.5rem 0.5rem 0.5rem;
+        }
+      }
+    }
+  }
+  @include computer {
+    .slider{
+      img{
+        height:50rem;
+      }
+    }
+    .product {
+      .card {
+        width: calc(120rem / 4);
+        &__header{
+          img{
+            padding:2rem;
+          }
+        }
 
-       @include computer{
-         width: calc(120rem / 4);
-       }
-     }
-   }
- } 
+        &__title{
+          font-size: 1.5rem;
+        }
+
+        &__detail{
+          font-size: 1.2rem;
+        }
+      }
+    }
+  }
 }

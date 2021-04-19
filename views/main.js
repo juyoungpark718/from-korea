@@ -1,13 +1,13 @@
 const render = () => `
   <div class="container">
     <div class="main">
-      <div class="slider">
-        <div>여기는 사진 슬라이딩</div>
+      <div class="slider main__content">
+        <img src="/images/sample1.jpg" alt="ads"/>
       </div>
-      <div class="order-manual">
+      <div class="order-manual main__content">
         <div>여기는 주문 방법</div>
       </div>
-      <div class="product">
+      <div class="product main__content">
         <div class="product__inner">
           <div class="card">
             <div class="card__header">
