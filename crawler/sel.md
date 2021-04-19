@@ -1,6 +1,6 @@
 https://www.coupang.com/vp/products/186443832?itemId=533071376&vendorItemId=4389013537&sourceType=CATEGORY&categoryId=115574&isAddedCart=
 
-1. Prod-option__list
+1. Prod-option__list - 완
    1. Prod-option-dropdown-item
       1. a 태그
          1. Prod-option-dropdown-item-aside
@@ -9,11 +9,11 @@ https://www.coupang.com/vp/products/186443832?itemId=533071376&vendorItemId=4389
             1. prod-option__dropdown-item-title
             2. prod-option__dropdown-item-price
 
-https://www.coupang.com/vp/products/1345408382?itemId=2373048494&vendorItemId=74970774095&sourceType=CATEGORY&categoryId=328501&isAddedCart=
-
 ---
 
-2. Prod-option__item Dropdown-Select
+https://www.coupang.com/vp/products/1345408382?itemId=2373048494&vendorItemId=74970774095&sourceType=CATEGORY&categoryId=328501&isAddedCart=
+
+2. Prod-option__item Dropdown-Select - 완
    1. #Dropdown-Select__Attr-id
    2. Dropdown-Select__Dropdown
       1. Dropdown-Select__Dropdown__Item
@@ -34,24 +34,9 @@ https://www.coupang.com/vp/products/4698318558?itemId=5914282411&vendorItemId=73
 
 ---
 
-https://www.coupang.com/vp/products/1221022926?itemId=2211833306&vendorItemId=70209625348&sourceType=CATEGORY&categoryId=176473&isAddedCart=
-
-4. prod-option__item
-   1. div 태그
-      1. prod-option__list
-         1. prod-option-dropdown-item
-            1. a 태그
-               1. prod-option-dropdown-item-aside
-                  1. img 태그
-               2. prod-option-dropdown-item-aside
-                  1. prod-option__dropdown-item-title
-                  2. prod-option__dropdown-item-price
-
----
-
 https://www.coupang.com/vp/products/1419894910?itemId=2457766929&vendorItemId=70451293801&sourceType=CATEGORY&categoryId=186664&isAddedCart=
 
-5. optionWrapper - 완
+1. optionWrapper - 완
    1. prod-option__item
       1. selected
    2. Image-Select__Container prod-option__item
