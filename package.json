@@ -8,7 +8,6 @@
     "migrate": "knex migrate:latest"
   },
   "dependencies": {
-    "connect-livereload": "^0.6.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
