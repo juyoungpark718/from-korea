@@ -1,273 +1,57 @@
+const googleLogin = () => {
+  const query = [
+    "response_type=code&",
+    `client_id=${process.env.GOOGLE_OAUTH_CLIENT_ID}&`,
+    "scope=openid%20profile%20email&",
+    "redirect_uri=http%3a%2f%2flocalhost%3a3000%2foauth%2fgoogle%2fredirect&",
+    // "state=security_token%3D138r5719ru3e1%26url%3Dhttps%3A%2F%2Foauth2-login-demo.example.com%2FmyHome&0394852-3190485-2490358&",
+  ]
+  return `<a href="https://accounts.google.com/o/oauth2/v2/auth?${query.join("")}">구글 로그인</a>`
+}
+
+const fbLogin = () => {
+  const query = [
+    `client_id=${process.env.FB_OAUTH_CLIENT_ID}&`,
+    `redirect_uri=http%3a%2f%2flocalhost%3a3000%2foauth%2ffacebook%2fredirect&`,
+    `state=aewfap21j21fjiweofjaoj3foij3joij3afj&`,
+    `granted_scopes=email`
+  ]
+  return `<a href="https://www.facebook.com/v10.0/dialog/oauth?${query.join("")}">페이스북 로그인</a>`
+}
+
 const render = () => `
-  <div class="main-container">
+  <div class="container">
     <div class="main">
-      <div class="row">
-        <aside class="sidebar">
-          <div class="side-menu-wrapper">
-            <div class="side-menu">
-              <div class="side-menu__item">
-                <div class="side-menu__title">Popular Categories</div>
-              </div>
-              <div class="side-menu__item">Electronics</div>
-              <div class="side-menu__item">Backpacks & Fashion Bags</div>
-              <div class="side-menu__item">Gaming & Accessories</div>
-              <div class="side-menu__item">Sporting Goods</div>
-              <div class="side-menu__item">Travel & Clothing</div>
-              <div class="side-menu__item">Computer</div>
-              <div class="side-menu__item">Home & Kitchen</div>
+      <div class="slider">
+        <div>여기는 사진 슬라이딩</div>
+      </div>
+      <div class="order-manual">
+        <div>여기는 주문 방법</div>
+      </div>
+      <div class="product">
+        <div class="product__inner">
+          <div class="card">
+            <div class="card__header">
+              <img src="https://thumbnail6.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2020/08/21/16/6/c9dadafc-38cb-4389-a9fd-ec6b40aad16f.jpg"/>
             </div>
-            <div class="side-banner">
-              <div class="side-banner__img">
-                  <img src="/images/banner2.jpg" alt="banner"/>
-              </div>
-              <div class="side-banner__content">
-                <h4>ULTIMATE SALE</h4>
-                <h3>UP TO 70%</h3>
-                <p>Discount Selected Items</p> 
-              </div>
+            <div class="card__title">
+              에뛰드 플레이 컬러 아이즈 뮬리로맨스 아이섀도 팔레트 8g
             </div>
-            <div class="products">
-              <h4>Popular Products</h4>
-              <div class="product-list">
-                <div class="product">
-                  <div class="product__image">
-                    <img src="/images/product10.jpg" alt="product"/>
-                  </div>
-                  <div class="product__detail">
-                    <h3>Hand Electric cell</h3>
-                    <span>$26.00</span>
-                  </div>
-                </div>
-                <div class="product">
-                  <div class="product__image">
-                    <img src="/images/product11.jpg" alt="product"/>
-                  </div>
-                  <div class="product__detail">
-                    <h3>Man's Fashion Hood</h3>
-                    <span>$39.00</span>
-                  </div>
-                </div>
-                <div class="product">
-                  <div class="product__image">
-                    <img src="/images/product12.jpg" alt="product"/>
-                  </div>
-                  <div class="product__detail">
-                    <h3>Women's Fashion Jeans Clothing</h3>
-                    <span>$199.00</span>
-                  </div>
-                </div>
-              </div>
-            </div> 
-          </div>
-        </aside>
-        <div class="main-content-container">
-          <div class="slider">
-            <img src="/images/sample1.jpg" alt="ads"/>
-          </div>
-          <div class="order-manual">
-            <div class="order-manual__item">
-              <img src="/images/banner1.jpg" alt="img"/>
-            </div>
-            <div class="order-manual__item">
-              <img src="/images/banner3.jpg" alt="img"/>
+            <div class="card__detail">
+              <div class="card__detail__price">14,410원</div>
+              <div class="card_detail__sold">1004 Sold</div>
             </div>
           </div>
-          <div class="featured-product">
-            <div class="featured-product__title-wrapper">
-              <div class="featured-product__title">Featured Product</div>
-              <div class="featured-product__more">
-                <a>VIEW MORE ⌲</a>
-              </div>
+          <div class="card">
+            <div class="card__header">
+              <img src="https://thumbnail6.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2020/08/21/16/6/c9dadafc-38cb-4389-a9fd-ec6b40aad16f.jpg"/>
             </div>
-            <div class="featured-product__list">
-              <div class="featured-product__list__item">
-                <div class="featured-product__list__item__img">
-                  <img src="/images/products/1.jpg" alt="featuted-product"/>
-                </div>
-                <div class="featured-product__list__item__details">
-                  <div class="featured-product__list__item__details__tag">WOMEN'S</div>
-                  <div class="featured-product__list__item__details__name">Comfortable Brown Scarf</div>
-                  <div class="featured-product__list__item__details__price">$28.74</div>
-                </div>
-              </div>
-              <div class="featured-product__list__item">
-                <div class="featured-product__list__item__img">
-                  <img src="/images/products/2.jpg" alt="featuted-product"/>
-                </div>
-                <div class="featured-product__list__item__details">
-                  <div class="featured-product__list__item__details__tag">BAGS</div>
-                  <div class="featured-product__list__item__details__name">Fashional Handbag</div>
-                  <div class="featured-product__list__item__details__price">$83.32</div>
-                </div>
-              </div>
-              <div class="featured-product__list__item">
-                <div class="featured-product__list__item__img">
-                  <img src="/images/products/3.jpg" alt="featuted-product"/>
-                </div>
-                <div class="featured-product__list__item__details">
-                  <div class="featured-product__list__item__details__tag">SHOES</div>
-                  <div class="featured-product__list__item__details__name">Converse Season Shoes</div>
-                  <div class="featured-product__list__item__details__price">$140.00</div>
-                </div>
-              </div>
-              <div class="featured-product__list__item">
-                <div class="featured-product__list__item__img">
-                  <img src="/images/products/4.jpg" alt="featuted-product"/>
-                </div>
-                <div class="featured-product__list__item__details">
-                  <div class="featured-product__list__item__details__tag">BAGS</div>
-                  <div class="featured-product__list__item__details__name">A Dress-suit Valise</div>
-                  <div class="featured-product__list__item__details__price">$28.74</div>
-                </div>
-              </div>
-              <div class="featured-product__list__item">
-                <div class="featured-product__list__item__img">
-                  <img src="/images/products/5.jpg" alt="featuted-product"/>
-                </div>
-                <div class="featured-product__list__item__details">
-                  <div class="featured-product__list__item__details__tag">WATCH</div>
-                  <div class="featured-product__list__item__details__name">Fashion Electric Wrist Watch</div>
-                  <div class="featured-product__list__item__details__price">$472.14</div>
-                </div>
-              </div>
-              <div class="featured-product__list__item">
-                <div class="featured-product__list__item__img">
-                  <img src="/images/products/6.jpg" alt="featuted-product"/>
-                </div>
-                <div class="featured-product__list__item__details">
-                  <div class="featured-product__list__item__details__tag">WOMEN'S</div>
-                  <div class="featured-product__list__item__details__name">Fashional Handbag</div>
-                  <div class="featured-product__list__item__details__price">$72.34</div>
-                </div>
-              </div>
-              <div class="featured-product__list__item">
-                <div class="featured-product__list__item__img">
-                  <img src="/images/products/7.jpg" alt="featuted-product"/>
-                </div>
-                <div class="featured-product__list__item__details">
-                  <div class="featured-product__list__item__details__tag">COSMETIC</div>
-                  <div class="featured-product__list__item__details__name">Flush Blue Tank</div>
-                  <div class="featured-product__list__item__details__price">$16.45</div>
-                </div>
-              </div>
-              <div class="featured-product__list__item">
-                <div class="featured-product__list__item__img">
-                  <img src="/images/products/8.jpg" alt="featuted-product"/>
-                </div>
-                <div class="featured-product__list__item__details">
-                  <div class="featured-product__list__item__details__tag">SHOES</div>
-                  <div class="featured-product__list__item__details__name">Women's Red Sneaker</div>
-                  <div class="featured-product__list__item__details__price">$49.76</div>
-                </div>
-              </div>
+            <div class="card__title">
+              에뛰드 플레이 컬러 아이즈 뮬리로맨스 아이섀도 팔레트 8g
             </div>
-          </div>
-          <!-- main content end -->
-          <div class="main-banner">
-            <div class="main-banner-content-wrapper">
-              <div class="main-banner-content">
-                <h4 class="main-banner-content--text-center">COMING SOON</h4>
-                <h2 class="main-banner-content--text-center"><span>Black Friday</span> Sale</h2>
-                <p class="main-banner-content--text-center">Get 10% Off First Order</p>
-              </div>
-            </div>
-          </div>
-          <div class="products-list">
-            <div class="products">
-              <h4>Sale Products</h4>
-              <div class="product-list">
-                <div class="product">
-                  <div class="product__image">
-                    <img src="/images/product10.jpg" alt="product"/>
-                  </div>
-                  <div class="product__detail">
-                    <h3>Hand Electric cell</h3>
-                    <span>$26.00</span>
-                  </div>
-                </div>
-                <div class="product">
-                  <div class="product__image">
-                    <img src="/images/product11.jpg" alt="product"/>
-                  </div>
-                  <div class="product__detail">
-                    <h3>Man's Fashion Hood</h3>
-                    <span>$39.00</span>
-                  </div>
-                </div>
-                <div class="product">
-                  <div class="product__image">
-                    <img src="/images/product12.jpg" alt="product"/>
-                  </div>
-                  <div class="product__detail">
-                    <h3>Women's Fashion Jeans Clothing</h3>
-                    <span>$199.00</span>
-                  </div>
-                </div>
-              </div>
-            </div> 
-            <div class="products">
-              <h4>Latest Products</h4>
-              <div class="product-list">
-                <div class="product">
-                  <div class="product__image">
-                    <img src="/images/product10.jpg" alt="product"/>
-                  </div>
-                  <div class="product__detail">
-                    <h3>Hand Electric cell</h3>
-                    <span>$26.00</span>
-                  </div>
-                </div>
-                <div class="product">
-                  <div class="product__image">
-                    <img src="/images/product11.jpg" alt="product"/>
-                  </div>
-                  <div class="product__detail">
-                    <h3>Man's Fashion Hood</h3>
-                    <span>$39.00</span>
-                  </div>
-                </div>
-                <div class="product">
-                    <div class="product__image">
-                      <img src="/images/product12.jpg" alt="product"/>
-                    </div>
-                    <div class="product__detail">
-                      <h3>Women's Fashion Jeans Clothing</h3>
-                      <span>$199.00</span>
-                    </div>
-                </div>
-              </div>
-            </div> 
-            <div class="products">
-              <h4>Best of the Week</h4>
-              <div class="product-list">
-                <div class="product">
-                  <div class="product__image">
-                    <img src="/images/products/15.jpg" alt="product"/>
-                  </div>
-                  <div class="product__detail">
-                    <h3>Hand Electric cell</h3>
-                    <span>$26.00</span>
-                  </div>
-                </div>
-                <div class="product">
-                  <div class="product__image">
-                    <img src="/images/products/16.jpg" alt="product"/>
-                  </div>
-                  <div class="product__detail">
-                    <h3>Man's Fashion Hood</h3>
-                    <span>$39.00</span>
-                  </div>
-                </div>
-                <div class="product">
-                    <div class="product__image">
-                      <img src="/images/products/17.jpg" alt="product"/>
-                    </div>
-                    <div class="product__detail">
-                      <h3>Women's Fashion Jeans Clothing</h3>
-                      <span>$199.00</span>
-                    </div>
-                </div>
-              </div>
+            <div class="card__detail">
+              <div class="card__detail__price">14,410원</div>
+              <div class="card_detail__sold">1004 Sold</div>
             </div>
           </div>
         </div>
@@ -278,4 +62,4 @@ const render = () => `
 
 module.exports = {
   render,
-};
+}

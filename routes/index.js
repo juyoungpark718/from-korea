@@ -5,28 +5,14 @@ const router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  const { user } = req.session;
-  if(user){
-    res.send(
-      Layout.render(
-        {
-          title: 'index 페이지입니다.',
-          user, 
-          body: Main.render(),
-          styles: [styleSheet`main/style.css`],
-          scripts: [scripts`main/index.js`]
-        }
-      )
-    );
-    return ;
-  }
+  console.log(req.session.user);
   res.send(
     Layout.render(
       {
         title: 'index 페이지입니다.',
         body: Main.render(),
-        styles: [styleSheet`main/style.css`],
-        scripts: [scripts`main/index.js`]
+        styles: [`<link rel="stylesheet" type="text/css" href="/assets/main/style.css"/>`],
+        scripts: [`<script type="module" src="/assets/main/index.js"></script>`]
       }
     )
   );
