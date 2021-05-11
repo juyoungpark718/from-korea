@@ -1,4 +1,5 @@
 const Header = require("./header");
+const Footer = require("./footer");
 
 const render = ({ title = "From korea", user, styles = [], body = "", scripts = [] }) => {
   return `
@@ -15,14 +16,19 @@ const render = ({ title = "From korea", user, styles = [], body = "", scripts = 
   <body>
     ${Header.render(user)}
     ${body}
+    ${Footer.render()}
     <script src="https://unpkg.com/fxdom/dist/fxd.js"></script>
     <script src="https://unpkg.com/fxjs/dist/fx.js"></script>
     ${scripts.join("\n")}
-    ${process.env.NODE_ENV === "dev" ? `<script src="//localhost:35729/livereload.js?snipver=1" async defer></script>` : ""}
+    ${
+      process.env.NODE_ENV === "dev"
+        ? `<script src="//localhost:35729/livereload.js?snipver=1" async defer></script>`
+        : ""
+    }
   </body>
   </html>`;
-}
+};
 
 module.exports = {
   render,
-}
+};
