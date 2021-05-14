@@ -1,6 +1,7 @@
 const OAuth = require("./oauth");
+const Footer = require("./footer");
 
-const render = ({ title, scripts =[], styles = [] }) => {
+const render = ({ title, scripts = [], styles = [] }) => {
   return `
   <!DOCTYPE html>
   <html lang="en">
@@ -13,21 +14,34 @@ const render = ({ title, scripts =[], styles = [] }) => {
     <title>${title}</title>
   </head>
   <body>
-    <div class="container">
+    <header class="login-header">
+      <div class="login-header__logo">From. Korea</div>
+    </header>
+    <main class="login-container">
       <div class="login-content">
-        <div class="logo">FromKorea | Log in</div>
+        <div class="login-content__logo-wrapper">
+          <div class="login-content__logo">
+            <h2>From. Korea</h2>
+            <h4>Could you choose a login method?</h4>
+          </div>
+        </div>
         <div class="oauth">
           ${OAuth.googleLogin()}
           ${OAuth.fbLogin()}
         </div>
       </div>
-    </div>
+    </main>
+    ${Footer.render()}
     ${scripts.join("\n")}
-    ${process.env.NODE_ENV === "dev" ? `<script src="//localhost:35729/livereload.js?snipver=1" async defer></script>` : ""}
+    ${
+      process.env.NODE_ENV === "dev"
+        ? `<script src="//localhost:35729/livereload.js?snipver=1" async defer></script>`
+        : ""
+    }
   </body>
   </html>`;
-}
+};
 
 module.exports = {
-  render
-}
+  render,
+};
