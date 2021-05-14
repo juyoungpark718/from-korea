@@ -226,6 +226,7 @@
       }
 
       &__bottom {
+        display: block;
         &__wrapper {
           width: $md-width;
           margin: 0 auto;

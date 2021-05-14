@@ -61,8 +61,22 @@ const render = () => `
           </div>
         </aside>
         <div class="main-content-container">
-          <div class="slider">
-            <img src="/images/sample1.jpg" alt="ads"/>
+          <div class="slider-container">
+            <div class="slider">
+              <div class="slider__item">
+                <img src="/images/sample1.jpg" alt="ads"/>
+              </div>
+              <div class="slider__item">
+                <img src="/images/sample1.jpg" alt="ads"/>
+              </div>
+              <div class="slider__item">
+                <img src="/images/sample1.jpg" alt="ads"/>
+              </div>
+            </div>
+            <div class="slider-btn btn-left"><</div>
+            <div class="slider-btn btn-right">></div>
+            <div class="slider-controller">
+            </div>
           </div>
           <div class="order-manual">
             <div class="order-manual__item">
