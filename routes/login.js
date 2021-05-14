@@ -3,9 +3,13 @@ const router = express.Router();
 const Login = require("../views/login");
 
 router.get("/", (req, res, next) => {
+  if(req.session.user){
+    res.redirect("/");
+    return;
+  }
   res.send(
     Login.render({
-      title: "FromKorea | Log in",
+      title: "From. Korea | Log in",
       styles: [styleSheet`login/style.css`],
     })
   );

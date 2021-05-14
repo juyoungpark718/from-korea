@@ -78,11 +78,11 @@ function slide(value){
 }
 
 $.qs(".btn-left").addEventListener("click", () => {
-  if(!slideRAF) slide(1);
+  if(!slideRAF) slide(-1);
 });
 
 $.qs(".btn-right").addEventListener("click", () => {
-  if(!slideRAF) slide(-1);
+  if(!slideRAF) slide(1);
 });
 
 setInterval(() => {

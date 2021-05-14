@@ -9,7 +9,7 @@ router.get("/", function (req, res, next) {
   if (user) {
     res.send(
       Layout.render({
-        title: "index 페이지입니다.",
+        title: "From. Korea",
         user,
         body: Main.render(),
         styles: [styleSheet`main/style.css`],
@@ -20,7 +20,7 @@ router.get("/", function (req, res, next) {
   }
   res.send(
     Layout.render({
-      title: "index 페이지입니다.",
+      title: "From. Korea",
       body: Main.render(),
       styles: [styleSheet`main/style.css`],
       scripts: [scripts`main/index.js`],
