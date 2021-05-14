@@ -3,7 +3,7 @@ const googleLogin = () => {
     "response_type=code&",
     `client_id=${process.env.GOOGLE_OAUTH_CLIENT_ID}&`,
     "scope=openid%20profile%20email&",
-    "redirect_uri=http%3a%2f%2flocalhost%3a3000%2foauth%2fgoogle%2fredirect&",
+    `redirect_uri=${encodeURI(process.env.GOOGLE_OAUTH_REDIRECT_URI)}&`,
     // "state=security_token%3D138r5719ru3e1%26url%3Dhttps%3A%2F%2Foauth2-login-demo.example.com%2FmyHome&0394852-3190485-2490358&",
   ]
   return `
@@ -15,7 +15,7 @@ const googleLogin = () => {
 const fbLogin = () => {
   const query = [
     `client_id=${process.env.FB_OAUTH_CLIENT_ID}&`,
-    `redirect_uri=http%3a%2f%2flocalhost%3a3000%2foauth%2ffacebook%2fredirect&`,
+    `redirect_uri=${encodeURI(process.env.FB_OAUTH_REDIRECT_URI)}&`,
     `state=aewfap21j21fjiweofjaoj3foij3joij3afj&`,
     `granted_scopes=email`
   ]
