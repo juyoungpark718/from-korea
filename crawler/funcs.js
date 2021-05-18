@@ -1,18 +1,20 @@
 const checkIterable = (obj) => {
-  if(obj === null) return false;
-  return typeof obj[Symbol.iterator] === 'function';
-}
+  if (obj === null) return false;
+  return typeof obj[Symbol.iterator] === "function";
+};
 
 const clearCache = (page) => async (url) => {
   const client = await page.target().createCDPSession();
-  await client.send('Network.clearBrowserCookies');
-  await client.send('Network.clearBrowserCache');  
+  await client.send("Network.clearBrowserCookies");
+  await client.send("Network.clearBrowserCache");
   await page.goto(url);
   return page;
 };
 
-const getProductTitle = (p) => async (obj) => ((obj.title = await p.$eval(".prod-buy-header__title", (h2) => h2.innerText)), obj);
-const getProductPrice = (p) => async (obj) => ((obj.price = await p.$eval(".total-price", (span) => span.innerText.trim())), obj);
+const getProductThumbnail = (p) => async (obj) => (obj.thumnbail = await p.$eval(".prod-image__detail", (img) => img.src), obj);
+const getProductItemId = (p) => async (obj) => (obj.itemId = await p.$eval("#contents", (section) => section.dataset.productId), obj);
+const getProductTitle = (p) => async (obj) => (obj.title = await p.$eval(".prod-buy-header__title", (h2) => h2.innerText), obj);
+const getProductPrice = (p) => async (obj) => (obj.price = await p.$eval(".total-price", (span) => span.innerText.trim()), obj);
 const getSingleTextLable = (p) => async (obj) => {
   const options = await p.$$eval(".single-attribute__textLabel", (els) =>
     els.map((e) => {
@@ -46,7 +48,8 @@ const getDropDownItem = (p) => async (obj) => {
         const priceEl = e.querySelector(".prod-option__dropdown-item-price");
         const strongEl = priceEl && priceEl.querySelector("strong");
         const title = titleEl && titleEl.innerText;
-        if (strongEl && strongEl.innerText.replace(/[\s\n]/g, "")) return { title, price: strongEl.innerText };
+        if (strongEl && strongEl.innerText.replace(/[\s\n]/g, ""))
+          return { title, price: strongEl.innerText };
         if (!priceEl.innerText.replace(/[\s\n]/g, "")) return { title };
         return { title, price: priceEl.innerText };
       });
@@ -62,9 +65,9 @@ const getDropDownLabel = (p) => async (obj) => {
     return items.map((item) => {
       const labelEl = item.querySelector("#Dropdown-Select__Attr-id");
       const label = labelEl && labelEl.innerText;
-      const values = Array.from(
-        item.querySelectorAll(".Dropdown-Select__Dropdown__Item")
-      ).map((e) => e.innerText.trim());
+      const values = Array.from(item.querySelectorAll(".Dropdown-Select__Dropdown__Item")).map(
+        (e) => e.innerText.trim()
+      );
       if (!label) return;
       return { label, value: values };
     });
@@ -74,12 +77,30 @@ const getDropDownLabel = (p) => async (obj) => {
   return obj;
 };
 
+const getSingleProdOption = (p) => async (obj) => {
+  const options = await p.$$eval(".prod-option__item", (items) => {
+    return items.map((item) => {
+      const labelEl = item.querySelector(".title");
+      const valueEl = item.querySelector(".value");
+      if(!labelEl && !valueEl) return;
+      if(!labelEl) return { value: valueEl.innerText };
+      if(!valueEl) return { label: labelEl.innerText };
+      return { label:labelEl.innerText, value: valueEl.innerText };
+    });
+  });
+  checkIterable(options) && obj.options.push(...options.filter(e => e));
+  return obj;
+};
+
 module.exports = {
-  getProductTitle, 
-  getProductPrice, 
-  getSingleTextLable, 
-  getImageSelect, 
-  getDropDownItem, 
+  getProductItemId,
+  getProductThumbnail,
+  getProductTitle,
+  getProductPrice,
+  getSingleTextLable,
+  getImageSelect,
+  getDropDownItem,
   getDropDownLabel,
-  clearCache
-}
+  getSingleProdOption,
+  clearCache,
+};
