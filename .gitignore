@@ -171,3 +171,5 @@ knexfile.js
 .env
 
 /public/assets/*
+
+/crawler/*.json
