@@ -5,86 +5,42 @@ const fs = require("fs");
 const {
   getProductTitle,
   getProductPrice,
-  getSingleTextLable,
-  getImageSelect,
-  getDropDownItem,
-  getDropDownLabel,
-  clearCache,
-  getSingleProdOption,
+  getOptionWrapper,
+  getProdOption,
   getProductItemId,
-  getProductThumbnail
-} = require("./funcs");
+  getProductThumbnail,
+  createContext
+} = require("./utils");
 
-const getItem = (p) =>
-  _.go(
+const getItem = async ({ context, url }) => {
+  const page = await context.newPage();
+  await page.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36");
+  await page.setCacheEnabled(false);
+  await page.setDefaultNavigationTimeout(0);
+  await page.goto(url);
+  const options = await _.go(
     { options: [] },
-    getProductItemId(p),
-    getProductThumbnail(p),
-    getProductTitle(p),
-    getProductPrice(p),
-    getSingleTextLable(p),
-    getImageSelect(p),
-    getDropDownItem(p),
-    getDropDownLabel(p),
-    getSingleProdOption(p)
+    getProductItemId(page),
+    getProductThumbnail(page),
+    getProductTitle(page),
+    getProductPrice(page),
+    getOptionWrapper(page),
+    getProdOption(page)
   );
+  await context.close();
+  return options;
+}
 
-// async function getProducts() {
-//   const browser = await puppeteer.launch({ headless: false });
-//   const page = await browser.newPage();
-//   const urls = await _.go(
-//     L.range(Infinity),
-//     L.map(_.delay(1000)),
-//     L.map((e) => `https://www.coupang.com/np/categories/186764?page=${e + 1}`),
-//     L.map(clearCache(page)),
-//     L.map((p) => p.$$eval(".baby-product-link", (atags) => atags.map((e) => e.href))),
-//     L.takeWhile((e) => e.length !== 0),
-//     _.flat
-//   );
-
-//   await _.go(
-//     urls,
-//     L.map(_.delay(1000)),
-//     L.map(clearCache(page)),
-//     L.map(getItem),
-//     _.take(Infinity),
-//     (e) => fs.writeFileSync("./output.json", JSON.stringify(e))
-//   );
-
-//   await browser.close();
-// }
-
-async function getProductsDev() {
-  const browser = await puppeteer.launch({ headless: false });
-  const page = await browser.newPage();
-  const urls = await _.go(
-    L.range(1),
-    L.map(_.delay(1000)),
-    L.map((e) => `https://www.coupang.com/np/categories/186764?page=${e + 1}`),
-    L.map(clearCache(page)),
-    L.map((p) => p.$$eval(".baby-product-link", (atags) => atags.map((e) => e.href))),
-    _.flat,
-    _.take(10)
-  );
-
+async function getProduct(url) {
+  const browser = await puppeteer.launch();
   await _.go(
-    urls,
-    L.map(_.delay(1000)),
-    L.map(clearCache(page)),
-    L.map(getItem),
-    _.take(Infinity),
+    url,
+    createContext(browser),
+    getItem,
     (e) => fs.writeFileSync("./output.json", JSON.stringify(e))
   );
 
   await browser.close();
 }
 
-// getProducts();
-
-getProductsDev();
-
-/*
-1. 카테고리 목록으로 지정해놓은 애들로 들어가서 page=1 ~ page=n까지의 상품 목록들을 긁어옴
-    1-1. 긁어온 url에 대해서 각 페이지의 이름, 가격, 옵션, 상세내용을 디비에 저장시킴
-2. 다른 카테고리에 대해서도 똑같이 실행
-*/
+getProduct("https://www.coupang.com/vp/products/1540038879?itemId=2638186666&vendorItemId=70629060453&sourceType=CATEGORY&categoryId=186664&isAddedCart=");
