@@ -20,71 +20,81 @@ _.go(
 );
 
 // image slider
-const items = [...$.qsa(".slider__item")];
-const dotsHTML = Array(items.length).fill(0).map(e => '<div class="slider-controller__dot"></div>').join("");
-$.setHTML(dotsHTML, $.qs(".slider-controller"));
-const dots = [...$.qsa(".slider-controller__dot")];
-let slideRAF = null;
-let currentItemIndex = 0;
-$.toggleClass("slider-controller__dot--active", dots[currentItemIndex]);
-items[currentItemIndex].style.display = "block";
-function getNextItemIndex(len, next){
-  if(0 > next){
-    return len-1;
-  }
-  if(next >= len){
-    return 0;
-  }
-  return next;
-}
+function imageSlider(){
+  const items = [...$.qsa(".slider__item")];
+  const dotsHTML = _.go(
+    _.range(3),
+    _.map(() => '<div class="slider-controller__dot"></div>'),
+    (arr) => arr.join("")
+  );
+  const dots = _.go(
+    $.qs(".slider-controller"),
+    $.setHTML(dotsHTML),
+    (sliderController) => [...$.qsa(".slider-controller__dot", sliderController)],
+  );
+  let slideRAF = null;
+  let currentItemIndex = 0;
 
-function slide(value){
-  let start = 0;
-  let nextItemIndex = getNextItemIndex(items.length, currentItemIndex+value);
-  let current = items[currentItemIndex];
-  let next = items[nextItemIndex];
   $.toggleClass("slider-controller__dot--active", dots[currentItemIndex]);
-  $.toggleClass("slider-controller__dot--active", dots[nextItemIndex]);
-  if(value > 0){
-    next.style.left = "100%";
-  }else{
-    next.style.right = "100%";
-  }
-  next.style.display = "flex";
-  function slideAnimation(timestamp) {
-    if(!start) start = timestamp;
-    let progress = timestamp - start;
-    if(value > 0){
-      current.style.right = Math.min(progress / 5, 100) + "%";
-      next.style.left = (100 - Math.min(progress / 5, 100)) + "%";
-    }else{
-      current.style.left = Math.min(progress/ 5, 100) + "%";
-      next.style.right = (100 - Math.min(progress/ 5, 100)) + "%";
-    }
-    if(progress < 1000){
-      window.requestAnimationFrame(slideAnimation);
-    }else{
-      currentItemIndex = nextItemIndex
-      current.style.display = "none";
-      current.style.left = "auto";
-      current.style.right = "auto";
-      next.style.left = "auto";
-      next.style.right = "auto";
-      slideRAF = null;
-    }
-  }
+  items[currentItemIndex].style.display = "block";
 
-  slideRAF = window.requestAnimationFrame(slideAnimation);
+  function getNextItemIndex(len, next){
+    if(0 > next) return len-1;
+    if(next >= len) return 0;
+    return next;
+  }
+  
+  function slide(value){
+    let start = 0;
+    let nextItemIndex = getNextItemIndex(items.length, currentItemIndex+value);
+    let current = items[currentItemIndex];
+    let next = items[nextItemIndex];
+
+    $.toggleClass("slider-controller__dot--active", dots[currentItemIndex]);
+    $.toggleClass("slider-controller__dot--active", dots[nextItemIndex]);
+
+    if(value > 0) next.style.left = "100%";
+    else next.style.right = "100%";
+
+    next.style.display = "flex";
+    
+    function slideAnimation(timestamp) {
+      if(!start) start = timestamp;
+      let progress = timestamp - start;
+      if(value > 0){
+        current.style.right = Math.min(progress / 5, 100) + "%";
+        next.style.left = (100 - Math.min(progress / 5, 100)) + "%";
+      }else{
+        current.style.left = Math.min(progress/ 5, 100) + "%";
+        next.style.right = (100 - Math.min(progress/ 5, 100)) + "%";
+      }
+      if(progress < 1000){
+        window.requestAnimationFrame(slideAnimation);
+      }else{
+        currentItemIndex = nextItemIndex
+        current.style.display = "none";
+        current.style.left = "auto";
+        current.style.right = "auto";
+        next.style.left = "auto";
+        next.style.right = "auto";
+        slideRAF = null;
+      }
+    }
+  
+    slideRAF = window.requestAnimationFrame(slideAnimation);
+  }
+  
+  $.qs(".btn-left").addEventListener("click", () => {
+    if(!slideRAF) slide(-1);
+  });
+  
+  $.qs(".btn-right").addEventListener("click", () => {
+    if(!slideRAF) slide(1);
+  });
+  
+  setInterval(() => {
+    if(!slideRAF) slide(1)
+  }, 5000);
 }
 
-$.qs(".btn-left").addEventListener("click", () => {
-  if(!slideRAF) slide(-1);
-});
-
-$.qs(".btn-right").addEventListener("click", () => {
-  if(!slideRAF) slide(1);
-});
-
-setInterval(() => {
-  if(!slideRAF) slide(1)
-}, 5000);
+imageSlider();
