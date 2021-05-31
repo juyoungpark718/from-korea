@@ -15,6 +15,7 @@ const uglifyJs = require("./uglify");
 const indexRouter = require('./routes/index');
 const oauthRouter = require("./routes/oauth");
 const loginRouter = require("./routes/login");
+const detailRouter = require("./routes/detail");
 const app = express();
 
 uglifyJs({ originPrefix: "./assets", distPrefix: "./public/assets", ignoreFile: { css:["shared"] } });
@@ -49,6 +50,7 @@ app.use(session({
 app.use('/', indexRouter);
 app.use('/oauth', oauthRouter);
 app.use("/user", loginRouter);
+app.use("/detail", detailRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
