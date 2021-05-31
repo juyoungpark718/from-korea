@@ -1,0 +1,79 @@
+@import "../shared/variables.scss";
+@import "../shared/mixin.scss";
+
+.detail-container{}
+
+.detail{
+  padding: 0 1rem;
+  .product{
+    display:flex;
+    flex-direction: column;
+
+    &__gallery{
+      .product__image{
+        .image{
+          width:100%;
+        }
+      }
+    }
+
+    &__details{
+      &__title{
+        padding:1rem 0;
+        font-size: 3rem;
+        font-weight: 700;
+      }
+      &__price{
+        padding:1rem 0;
+        font-size:2.5rem;
+        font-weight: 400;
+      }
+      &__options{}
+    }
+
+    &__form{
+      &__option{
+        display:flex;
+        margin:0.5rem 0.5rem 0.5rem 0;
+        label{
+          display:flex;
+          padding: 1rem;
+          align-items: center;
+          font-size: 1.5rem;
+          margin-right: 0.5rem;
+          border:1px solid $default-line-color;
+        }
+
+        &__desc{
+          display:flex;
+        }
+        &__text{
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+        }
+      }
+    }
+  }
+
+  @include computer{
+    width: $md-width;
+    margin: 0 auto;
+
+    .product{
+      display:flex;
+      flex-direction: row;
+
+      &__gallery{
+
+      }
+  
+      &__details{
+        &__options{}
+      }
+
+      &__form{
+      }
+    }
+  }
+}
