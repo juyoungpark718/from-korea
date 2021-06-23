@@ -12,7 +12,7 @@ const publicHeader = () => {
     </div>
     <div class="header__inner">
       <div class="group-flex">
-        <div class="header__logo">From. Korea</div>
+        <div class="header__logo"><a href="/">From. Korea</a></div>
         <div class="header__search">
           <input class="header__search__input" type="text" placeholder="Search / Paste Url" />
         </div>
@@ -31,8 +31,8 @@ const publicHeader = () => {
                 </div>
               </div>
               <div class="menu__inner__item">
-                <img class="menu__inner__item__img" src="/images/cart-outline.svg" alt="mycart"/>
-                <span class="menu__inner__item__text">My cart</span>
+                <a href="/cart"><img class="menu__inner__item__img" src="/images/cart-outline.svg" alt="mycart"/></a>
+                <a href="/cart"><span class="menu__inner__item__text">My cart</span></a>
               </div>
               <div class="menu__inner__item">
                 <img class="menu__inner__item__img" src="/images/person-outline.svg" alt="mypage"/>
@@ -79,7 +79,7 @@ const privateHeader = (user) => {
     </div>
     <div class="header__inner">
       <div class="group-flex">
-        <div class="header__logo">From. Korea</div>
+        <div class="header__logo"><a href="/">From. Korea</a></div>
         <div class="header__search">
           <input class="header__search__input" type="text" placeholder="Search / Paste Url" />
         </div>
@@ -98,8 +98,8 @@ const privateHeader = (user) => {
                 </div>
               </div>
               <div class="menu__inner__item">
-                <img class="menu__inner__item__img" src="/images/cart-outline.svg" alt="mycart"/>
-                <span class="menu__inner__item__text">My cart</span>
+                <a href="/cart"><img class="menu__inner__item__img" src="/images/cart-outline.svg" alt="mycart"/></a>
+                <a href="/cart"><span class="menu__inner__item__text">My cart</span></a>
               </div>
               <div class="menu__inner__item">
                 <img class="menu__inner__item__img" src="/images/person-outline.svg" alt="mypage"/>

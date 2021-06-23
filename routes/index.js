@@ -5,7 +5,7 @@ const router = express.Router();
 const { getCategoryPage } = require("../crawler/coupang");
 
 /* GET home page. */
-router.get("/", async function (req, res, next) {
+router.get("/", async function (req, res) {
   const { user } = req.session;
   // const data = await getCategoryPage("https://www.coupang.com/np/categories/186764", 1);
   const data = [];
@@ -16,7 +16,7 @@ router.get("/", async function (req, res, next) {
         user,
         body: Main.render(data),
         styles: [styleSheet`main/style.css`],
-        scripts: [scripts`main/index.js`],
+        scripts: [script`main/index.js`],
       })
     );
     return;
@@ -26,7 +26,7 @@ router.get("/", async function (req, res, next) {
       title: "From. Korea",
       body: Main.render(data),
       styles: [styleSheet`main/style.css`],
-      scripts: [scripts`main/index.js`],
+      scripts: [script`main/index.js`],
     })
   );
 });
