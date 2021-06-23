@@ -33,7 +33,9 @@ const getProductTitle = (p) => async (obj) => {
 };
 const getProductPrice = (p) => async (obj) => {
   try {
-    obj.price = await p.$eval(".total-price", (span) => span.innerText.trim());
+    const price = await p.$eval(".origin-price", (span) => span.innerText.replace(/\D/g, ""));
+    if(price) obj.price = price;
+    else obj.price = await p.$eval(".total-price", (span) => span.innerText.replace(/\D/g, ""));
     return obj;
   } catch (error) {
     return obj;
@@ -51,6 +53,7 @@ const getProductPrice = (p) => async (obj) => {
 const getOptionWrapper = (p) => async (obj) => {
   try {
     const options = await p.$eval("#optionWrapper", (wrapper) => {
+      let result = [];
       let singleAttributes = [...wrapper.querySelectorAll(".single-attribute__textLabel")];
       if (singleAttributes.length !== 0) {
         singleAttributes = singleAttributes.reduce((arr, attr) => {
@@ -76,11 +79,11 @@ const getOptionWrapper = (p) => async (obj) => {
           return arr;
         }, []);
       }
-      return [
-        { value: [...singleAttributes] },
-        { value: [...images] },
-        { value: [...dropdownItems] },
-      ];
+
+      if(singleAttributes) result.push(...singleAttributes.map(attr => ({ value: [attr] })));
+      if(images) result.push({ value: [...images] });
+      if(dropdownItems) result.push({ value: [...dropdownItems] });
+      return result;
     });
     checkIterable(options) && obj.options.push(...options);
     return obj;
@@ -123,7 +126,7 @@ const getProdOption = (p) => async (obj) => {
                 }
                 if (child.classList.contains("prod-option__dropdown-item-price")) {
                   const text = child.innerText.replace(/[\n|\s|\t]/g, "");
-                  if (text) option.price = text;
+                  if (text) option.price = text.replace(/\D/g, '');
                   return option;
                 }
                 return option;
@@ -155,8 +158,9 @@ const crawlProducts = async (page) => {
         const titleEl = aTag.querySelector(".name");
         const title = titleEl && titleEl.innerText.trim();
         const priceEl = aTag.querySelector(".price");
-        const price = priceEl && priceEl.innerText.trim();
-        return { url:productUrl, img:imgUrl, title, price };
+        const basePriceEl = priceEl && priceEl.querySelector(".base-price");
+        const basePrice = basePriceEl && basePriceEl.innerText.trim();
+        return { url:productUrl, img:imgUrl, title, price:basePrice ? basePrice : priceEl.innerText.trim() };
       });
       return data;
     });
