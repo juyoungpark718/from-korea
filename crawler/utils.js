@@ -6,21 +6,10 @@ const checkIterable = (obj) => {
   return typeof obj[Symbol.iterator] === "function";
 };
 
-const setUserAgent = (page) => async (url) => {
-  await page.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36");
-  await page.goto(url);
-  return page;
-};
-
-const createContext = (browser) => async (url) => {
-  const context = await browser.createIncognitoBrowserContext();
-  return { context, url };
-}
-
 // 공통 부분
 const getProductThumbnail = (p) => async (obj) => {
   try {
-    obj.thumnbail = await p.$eval(".prod-image__detail", (img) => img.src);
+    obj.thumbnail = await p.$eval(".prod-image__detail", (img) => img.src);
     return obj;
   } catch (error) {
     return obj;
@@ -44,7 +33,9 @@ const getProductTitle = (p) => async (obj) => {
 };
 const getProductPrice = (p) => async (obj) => {
   try {
-    obj.price = await p.$eval(".total-price", (span) => span.innerText.trim());
+    const price = await p.$eval(".origin-price", (span) => span.innerText.replace(/\D/g, ""));
+    if(price) obj.price = price;
+    else obj.price = await p.$eval(".total-price", (span) => span.innerText.replace(/\D/g, ""));
     return obj;
   } catch (error) {
     return obj;
@@ -62,6 +53,7 @@ const getProductPrice = (p) => async (obj) => {
 const getOptionWrapper = (p) => async (obj) => {
   try {
     const options = await p.$eval("#optionWrapper", (wrapper) => {
+      let result = [];
       let singleAttributes = [...wrapper.querySelectorAll(".single-attribute__textLabel")];
       if (singleAttributes.length !== 0) {
         singleAttributes = singleAttributes.reduce((arr, attr) => {
@@ -87,11 +79,11 @@ const getOptionWrapper = (p) => async (obj) => {
           return arr;
         }, []);
       }
-      return [
-        { value: [...singleAttributes] },
-        { value: [...images] },
-        { value: [...dropdownItems] },
-      ];
+
+      if(singleAttributes) result.push(...singleAttributes.map(attr => ({ value: [attr] })));
+      if(images) result.push({ value: [...images] });
+      if(dropdownItems) result.push({ value: [...dropdownItems] });
+      return result;
     });
     checkIterable(options) && obj.options.push(...options);
     return obj;
@@ -134,7 +126,7 @@ const getProdOption = (p) => async (obj) => {
                 }
                 if (child.classList.contains("prod-option__dropdown-item-price")) {
                   const text = child.innerText.replace(/[\n|\s|\t]/g, "");
-                  if (text) option.price = text;
+                  if (text) option.price = text.replace(/\D/g, '');
                   return option;
                 }
                 return option;
@@ -149,7 +141,6 @@ const getProdOption = (p) => async (obj) => {
       }
       return prodItems;
     });
-    console.log(options);
     checkIterable(options) && obj.options.push(...options);
     return obj;
   } catch (error) {
@@ -157,13 +148,67 @@ const getProdOption = (p) => async (obj) => {
   }
 };
 
+const crawlProducts = async (page) => {
+  try{
+    const products = await page.$$eval(".baby-product-link", (aTags) => {
+      const data = aTags.map((aTag) => {
+        const productUrl = aTag.href;
+        const imgEl = aTag.querySelector(".image");
+        const imgUrl = imgEl && imgEl.children[0].src;
+        const titleEl = aTag.querySelector(".name");
+        const title = titleEl && titleEl.innerText.trim();
+        const priceEl = aTag.querySelector(".price");
+        const basePriceEl = priceEl && priceEl.querySelector(".base-price");
+        const basePrice = basePriceEl && basePriceEl.innerText.trim();
+        return { url:productUrl, img:imgUrl, title, price:basePrice ? basePrice : priceEl.innerText.trim() };
+      });
+      return data;
+    });
+    return products;
+  }catch(error){
+    return [];
+  }
+}
+
+const createContext = (browser) => async (url) => {
+  const context = await browser.createIncognitoBrowserContext();
+  return { context, url };
+}
+
+const getItem = async ({ context, url }) => {
+  const page = await context.newPage();
+  await page.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36");
+  await page.setCacheEnabled(false);
+  await page.setDefaultNavigationTimeout(0);
+  await page.goto(url);
+  const options = await _.go(
+    { options: [] },
+    getProductItemId(page),
+    getProductThumbnail(page),
+    getProductTitle(page),
+    getProductPrice(page),
+    _.delay(500),
+    getOptionWrapper(page),
+    getProdOption(page)
+  );
+  await context.close();
+  return options;
+}
+
+const getProducts = async ({ context, url }) => {
+  const page = await context.newPage();
+  await page.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36");
+  await page.setCacheEnabled(false);
+  await page.setDefaultNavigationTimeout(0);
+  await page.goto(url);
+
+  const products = await crawlProducts(page);
+  await context.close();
+  return products;
+}
+
 module.exports = {
-  getProductItemId,
-  getProductThumbnail,
-  getProductTitle,
-  getProductPrice,
-  getOptionWrapper,
-  getProdOption,
-  setUserAgent,
   createContext,
-};
+  getItem,
+  getProducts
+}

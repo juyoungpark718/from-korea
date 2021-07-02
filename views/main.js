@@ -1,4 +1,4 @@
-const render = () => `
+const render = (data) => `
   <div class="main-container">
     <div class="main">
       <div class="row">
@@ -94,86 +94,22 @@ const render = () => `
               </div>
             </div>
             <div class="featured-product__list">
-              <div class="featured-product__list__item">
-                <div class="featured-product__list__item__img">
-                  <img src="/images/products/1.jpg" alt="featuted-product"/>
+              ${data && data.map(({ url, title, price, img }) => {
+                return `
+                <div class="featured-product__list__item">
+                  <a href="/detail?url=${url}">
+                    <div class="featured-product__list__item__img">
+                      <img src="${img}" alt="featuted-product"/>
+                    </div>
+                    <div class="featured-product__list__item__details">
+                      <div class="featured-product__list__item__details__tag">WOMEN'S</div>
+                      <div class="featured-product__list__item__details__name">${title}</div>
+                      <div class="featured-product__list__item__details__price">${price}</div>
+                    </div>
+                  </a>
                 </div>
-                <div class="featured-product__list__item__details">
-                  <div class="featured-product__list__item__details__tag">WOMEN'S</div>
-                  <div class="featured-product__list__item__details__name">Comfortable Brown Scarf</div>
-                  <div class="featured-product__list__item__details__price">$28.74</div>
-                </div>
-              </div>
-              <div class="featured-product__list__item">
-                <div class="featured-product__list__item__img">
-                  <img src="/images/products/2.jpg" alt="featuted-product"/>
-                </div>
-                <div class="featured-product__list__item__details">
-                  <div class="featured-product__list__item__details__tag">BAGS</div>
-                  <div class="featured-product__list__item__details__name">Fashional Handbag</div>
-                  <div class="featured-product__list__item__details__price">$83.32</div>
-                </div>
-              </div>
-              <div class="featured-product__list__item">
-                <div class="featured-product__list__item__img">
-                  <img src="/images/products/3.jpg" alt="featuted-product"/>
-                </div>
-                <div class="featured-product__list__item__details">
-                  <div class="featured-product__list__item__details__tag">SHOES</div>
-                  <div class="featured-product__list__item__details__name">Converse Season Shoes</div>
-                  <div class="featured-product__list__item__details__price">$140.00</div>
-                </div>
-              </div>
-              <div class="featured-product__list__item">
-                <div class="featured-product__list__item__img">
-                  <img src="/images/products/4.jpg" alt="featuted-product"/>
-                </div>
-                <div class="featured-product__list__item__details">
-                  <div class="featured-product__list__item__details__tag">BAGS</div>
-                  <div class="featured-product__list__item__details__name">A Dress-suit Valise</div>
-                  <div class="featured-product__list__item__details__price">$28.74</div>
-                </div>
-              </div>
-              <div class="featured-product__list__item">
-                <div class="featured-product__list__item__img">
-                  <img src="/images/products/5.jpg" alt="featuted-product"/>
-                </div>
-                <div class="featured-product__list__item__details">
-                  <div class="featured-product__list__item__details__tag">WATCH</div>
-                  <div class="featured-product__list__item__details__name">Fashion Electric Wrist Watch</div>
-                  <div class="featured-product__list__item__details__price">$472.14</div>
-                </div>
-              </div>
-              <div class="featured-product__list__item">
-                <div class="featured-product__list__item__img">
-                  <img src="/images/products/6.jpg" alt="featuted-product"/>
-                </div>
-                <div class="featured-product__list__item__details">
-                  <div class="featured-product__list__item__details__tag">WOMEN'S</div>
-                  <div class="featured-product__list__item__details__name">Fashional Handbag</div>
-                  <div class="featured-product__list__item__details__price">$72.34</div>
-                </div>
-              </div>
-              <div class="featured-product__list__item">
-                <div class="featured-product__list__item__img">
-                  <img src="/images/products/7.jpg" alt="featuted-product"/>
-                </div>
-                <div class="featured-product__list__item__details">
-                  <div class="featured-product__list__item__details__tag">COSMETIC</div>
-                  <div class="featured-product__list__item__details__name">Flush Blue Tank</div>
-                  <div class="featured-product__list__item__details__price">$16.45</div>
-                </div>
-              </div>
-              <div class="featured-product__list__item">
-                <div class="featured-product__list__item__img">
-                  <img src="/images/products/8.jpg" alt="featuted-product"/>
-                </div>
-                <div class="featured-product__list__item__details">
-                  <div class="featured-product__list__item__details__tag">SHOES</div>
-                  <div class="featured-product__list__item__details__name">Women's Red Sneaker</div>
-                  <div class="featured-product__list__item__details__price">$49.76</div>
-                </div>
-              </div>
+                `
+              }).join("")}
             </div>
           </div>
           <!-- main content end -->

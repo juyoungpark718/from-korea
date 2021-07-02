@@ -1,7 +1,7 @@
 global.privateRouter = (req, res, next) => {
   const { user } = req.session;  
   if(!user){
-    res.redirect("/");
+    res.redirect("/user");
     return;
   }
   next();
