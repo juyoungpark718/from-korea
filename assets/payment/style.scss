@@ -1,0 +1,61 @@
+@import "../shared/variables.scss";
+@import "../shared/mixin.scss";
+
+.payment{
+  @include computer{
+    width: $md-width;
+    margin: 0 auto;
+    &-item-wrapper{
+    }
+    &__item{
+      padding: 1rem 0;
+      border-bottom: 1px solid $default-line-color;
+      &__shipping{
+        font-size: 1.5rem;
+        padding: 1rem 0;
+        margin-bottom: 1rem;
+      }
+      &__products{
+        &__top{
+          font-size: 1.8rem;
+          font-weight: 700;
+          padding: 1rem 0;
+          display: flex;
+          &__amount{
+            padding: 0 1rem;
+          }
+        }
+      }
+    }
+    .product__card-container{
+      display: flex;
+    }
+    .product__card{
+      max-width: 12rem;
+      padding: 0.5rem;
+      margin-right: 1rem;
+      border: 1px solid $default-line-color;
+      border-radius: 0.5rem;
+      &__header{
+        img{
+          width:100%;
+        }
+      }
+      &__body{
+        &__title{
+          font-size: 1.4rem;
+          font-weight: 700;
+          margin-bottom: 0.2rem;
+        }
+        &__price{
+          font-size: 1.2rem;
+          font-weight: 600;
+          margin-bottom: 0.5rem;
+        }
+        &__options{
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}
