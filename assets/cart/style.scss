@@ -1,0 +1,107 @@
+@import "../shared/variables.scss";
+@import "../shared/mixin.scss";
+
+.cart{
+  width:100%;
+  min-height: 50rem;
+  @include computer{
+    .paypal-button-container{
+      display:flex;
+      justify-content: flex-end;
+
+      #paypal-button-wrapper{
+        
+      }
+    }
+    width: $md-width;
+    margin: 0 auto;
+
+    &__item{
+      display: flex;
+      height: 12rem;
+      &__col{
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom:1px solid $default-line-color;
+      }
+      &__checkbox{
+        flex:1;
+      }
+      &__img{
+        flex:2;
+        img{
+          height:100%;
+        }
+      }
+      &__name{
+        flex:3;
+        font-size: 1.5rem;
+      }
+      &__price{
+        flex:1;
+        font-size: 1.2rem;
+      }
+      &__options{
+        display:flex;
+        justify-content: space-around;
+        flex:2;
+        .item-option{
+          font-size: 1.2rem;
+        }
+      }
+      &__count{
+        flex:1;
+        font-size: 1.5rem;
+      }
+      &__head{
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+    }
+
+    &__price-wrapper{
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    &__price{
+      padding: 1rem;
+      .total-price{
+        text-align: end;
+      }
+    }
+  }
+}
+
+.modal-container{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  width: 100%;
+  min-height: 100%;
+  top:0;
+  left:0;
+  overflow: auto;
+  .modal-bg{
+    position:absolute;
+    width: 100%;
+    height: 100%;
+    top:0;
+    left:0;
+    background-color: rgba($color: #000000, $alpha: 0.5);
+  }
+  .modal{
+    z-index: 1;
+    .modal-controller{
+      position: relative;
+    }
+    width: 500px;
+    padding: 1rem 1rem;
+    background-color: white;
+
+    #paypal-button-wrapper{
+    }
+  }
+}

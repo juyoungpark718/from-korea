@@ -10,12 +10,22 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const session = require('express-session');
+const csrf = require("csurf");
 const livereload = require("livereload");
 const uglifyJs = require("./uglify");
+
+global.csrfProtection = csrf();
+
+//routers
 const indexRouter = require('./routes/index');
 const oauthRouter = require("./routes/oauth");
 const loginRouter = require("./routes/login");
+const detailRouter = require("./routes/detail");
+const cartRouter = require("./routes/cart");
+// const orderRouter = require("./routes/order");
+// const paymentRouter = require("./routes/payment");
 const app = express();
+global.app = app;
 
 uglifyJs({ originPrefix: "./assets", distPrefix: "./public/assets", ignoreFile: { css:["shared"] } });
 const liveServer = livereload.createServer({
@@ -46,9 +56,22 @@ app.use(session({
   saveUninitialized:false,
 }));
 
+app.use((req,res,next) => {
+  req.session.user = {
+    id:2,
+    name:"테스트 계정"
+  }
+  next();
+})
+
 app.use('/', indexRouter);
 app.use('/oauth', oauthRouter);
 app.use("/user", loginRouter);
+app.use("/detail", detailRouter);
+app.use ("/cart", cartRouter);
+// app.use("/order", orderRouter);
+// app.use("/payment", paymentRouter);
+require("./api/index");
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

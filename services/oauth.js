@@ -10,7 +10,7 @@ const getAccessTokenGoogle = (code) =>
         code,
         "client_id": process.env.GOOGLE_OAUTH_CLIENT_ID,
         "client_secret": process.env.GOOGLE_OAUTH_CLIENT_SECRET,
-        "redirect_uri": "http://localhost:3000/oauth/google/redirect",
+        "redirect_uri": process.env.GOOGLE_OAUTH_REDIRECT_URI,
         "grant_type": "authorization_code"
       }),
     });
@@ -20,7 +20,7 @@ const decodeBase64 = (data) => JSON.parse(Buffer.from(data, 'base64').toString('
 const getAccessTokenFB = (code) =>
     fetch(`https://graph.facebook.com/v10.0/oauth/access_token?`
       + `client_id=${process.env.FB_OAUTH_CLIENT_ID}&`
-      + `redirect_uri=http%3a%2f%2flocalhost%3a3000%2foauth%2ffacebook%2fredirect&`
+      + `redirect_uri=${encodeURI(process.env.FB_OAUTH_REDIRECT_URI)}&`
       + `client_secret=${process.env.FB_OAUTH_CLIENT_SECRET}&`
       + `code=${code}`
     );

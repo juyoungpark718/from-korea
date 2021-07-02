@@ -1,34 +1,33 @@
-const express = require('express');
+const express = require("express");
 const Layout = require("../views/layout");
 const Main = require("../views/main");
 const router = express.Router();
+const { getCategoryPage } = require("../crawler/coupang");
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get("/", async function (req, res) {
   const { user } = req.session;
-  if(user){
+  // const data = await getCategoryPage("https://www.coupang.com/np/categories/186764", 1);
+  const data = [];
+  if (user) {
     res.send(
-      Layout.render(
-        {
-          title: 'index 페이지입니다.',
-          user, 
-          body: Main.render(),
-          styles: [styleSheet`main/style.css`],
-          scripts: [scripts`main/index.js`]
-        }
-      )
+      Layout.render({
+        title: "From. Korea",
+        user,
+        body: Main.render(data),
+        styles: [styleSheet`main/style.css`],
+        scripts: [script`main/index.js`],
+      })
     );
-    return ;
+    return;
   }
   res.send(
-    Layout.render(
-      {
-        title: 'index 페이지입니다.',
-        body: Main.render(),
-        styles: [styleSheet`main/style.css`],
-        scripts: [scripts`main/index.js`]
-      }
-    )
+    Layout.render({
+      title: "From. Korea",
+      body: Main.render(data),
+      styles: [styleSheet`main/style.css`],
+      scripts: [script`main/index.js`],
+    })
   );
 });
 

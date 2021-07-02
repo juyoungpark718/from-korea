@@ -1,0 +1,81 @@
+@mixin footer {
+  .footer {
+    padding: 0 1rem;
+    background-color: #222222;
+    color: white;
+    &__top {
+      border-bottom: 1px solid #333333;
+      padding: 2rem 0;
+      &__logo {
+        padding: 1rem 0;
+        font-size: 3rem;
+        font-weight: 700;
+        text-align: center;
+      }
+      &__desc {
+        padding: 1rem 0;
+        text-align: center;
+        h4 {
+          font-size: 2rem;
+          font-weight: 600;
+        }
+        p {
+          font-size: 1.3rem;
+        }
+      }
+    }
+    &__middle {
+      padding: 2rem 0;
+      &__row {
+      }
+      &__widget {
+        &__title {
+          padding: 1rem 0;
+          font-size: 1.8rem;
+          font-weight: 600;
+        }
+        &__content {
+          color: #929292;
+          font-size: 1.2rem;
+          padding: 0.8rem 0;
+          span {
+            color: #cccccc;
+            font-weight: 600;
+            margin-right: 0.5rem;
+          }
+        }
+      }
+    }
+    &__bottom {
+      font-size: 1.2rem;
+      border-top: 1px solid #333333;
+      padding: 2rem 0;
+    }
+    @include computer {
+      .container {
+        width: $md-width;
+        margin: 0 auto;
+      }
+      &__top {
+        display: flex;
+        &__logo {
+          text-align: start;
+          flex: 0 0 30%;
+        }
+        &__desc {
+          text-align: start;
+          flex: 0 0 30%;
+        }
+      }
+
+      &__middle {
+        &__row {
+          display: flex;
+        }
+        &__widget {
+          flex: 1;
+        }
+      }
+    }
+  }
+}

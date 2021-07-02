@@ -1,48 +1,80 @@
 @import "../shared/mixin.scss";
+@import "../shared/variables.scss";
+@import "../shared/footer.scss";
 
-.container{
-  height:100vh;
-  display:flex;
+.login-header {
+  &__logo {
+    font-size: 2rem;
+    padding: 2rem 1rem;
+    border-bottom: 1px solid $default-line-color;
+  }
+  @include computer {
+    &__logo {
+      font-size: 3rem;
+      padding: 3rem 1rem;
+    }
+  }
+}
+
+.login-container {
+  height: 100vh;
+  display: flex;
   justify-content: center;
   align-items: center;
-  .login-content{
+  .login-content {
     width: 100%;
-    padding:0 5rem;
-    .logo{
-      display:flex;
-      justify-content: center;
-      align-items: center;
-      height:5rem;
+    padding: 0 5rem;
+
+    &__logo-wrapper {
+      margin: 3rem 0;
     }
-    .oauth{
-      a{
+
+    &__logo {
+      h2 {
+        margin: 1rem 0;
+        text-align: center;
+        font-size: 3rem;
+        font-weight: 300;
+      }
+      h4 {
+        margin: 1rem 0;
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 300;
+      }
+    }
+    .oauth {
+      a {
         text-decoration: none;
       }
-      &__btn{
-        display:flex;
+      &__btn {
+        display: flex;
         justify-content: center;
         align-items: center;
         font-size: 1.5rem;
         margin: 1rem 0;
-        height:5rem;
+        height: 5rem;
         border-radius: 0.5rem;
-        &--google{
+        &--google {
           border: 1px solid #afafaf;
           color: #737373;
           font-weight: 600;
         }
-        &--fb{
-          background-color: #507CC0;
-          color:#fff;
+        &--fb {
+          background-color: #507cc0;
+          color: #fff;
           font-weight: 600;
         }
       }
     }
   }
 
-  @include computer{
-    .login-content{
+  @include computer {
+    margin-top: -10rem;
+    .login-content {
       max-width: 60rem;
     }
   }
 }
+
+@include footer;
