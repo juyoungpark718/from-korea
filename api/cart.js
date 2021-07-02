@@ -32,8 +32,7 @@ router.post("/:id", csrfProtection, async (req, res) => {
   }
   const { id } = req.params;
   const { count } = req.body;
-  console.log(id, count);
-  // const cart = await cartService.updateCart({ id, count });
+  const cart = await cartService.updateCart({ id, count });
   res.status(200).send({ ok:true });
 });
 

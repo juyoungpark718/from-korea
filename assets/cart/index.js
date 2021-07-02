@@ -49,7 +49,7 @@ function tmplCartItem(cart){
     </div>`;
 }
 
-const createOrder = indexedCarts => (data, actions) => {
+const createOrder = indexedCarts => (data, action) => {
   const totalPrice = _.go(
     $.qsa(".product-checkbox"),
     L.filter(e => e.checked),
@@ -58,7 +58,7 @@ const createOrder = indexedCarts => (data, actions) => {
     L.map(cart => cart.productPrice * cart.count),
     prices => _.reduce((a,b) => a+b, 0, prices),
   );
-  console.log(totalPrice);
+
   return fetch('/api/payment/paypal/order/create', {
       method: 'post',
       headers:{
@@ -72,7 +72,7 @@ const createOrder = indexedCarts => (data, actions) => {
                 value: `${totalPrice / 1000}`,
                 currency_code: 'USD'
             }
-        }]
+        }],
       })
   }).then(function(res) {
       return res.json();
@@ -81,21 +81,21 @@ const createOrder = indexedCarts => (data, actions) => {
   });
 };
 
-function onApprove(data, actions) {
+const onApprove = indexedCarts => (data, actions) => {
   const { facilitatorAccessToken, orderID, payerID } = data;
-  return $.post(`/api/payment/paypal/order/${orderID}/capture/`, {
-    facilitatorAccessToken:facilitatorAccessToken,
-    orderID:orderID,
-    payerID:payerID
-  }).then(function(orderData) {
-    console.log(orderData);
-      // Three cases to handle:
-      //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
-      //   (2) Other non-recoverable errors -> Show a failure message
-      //   (3) Successful transaction -> Show confirmation or thank you
+  const products = _.go(
+    $.qsa(".product-checkbox"),
+    L.filter(e => e.checked),
+    L.map(e => e.value),
+    _.map(e => indexedCarts[e]),
+  )
+  if(products.length === 0) return alert("선택된 물품이 없습니다.");
 
-      // This example reads a v2/checkout/orders capture response, propagated from the server
-      // You could use a different API or structure for your 'orderData'
+  return $.post(`/api/payment/paypal/order/${orderID}/capture?carts=${products.map(({ id }) => id).join(",")}`, {
+    facilitatorAccessToken:facilitatorAccessToken,
+    payerID:payerID,
+    products
+  }).then(function(orderData) {
       const errorDetail = Array.isArray(orderData.details) && orderData.details[0];
 
       if (errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED') {
@@ -112,12 +112,13 @@ function onApprove(data, actions) {
 
       // Show a success message
       alert('Transaction completed by ' + orderData.payer.name.given_name);
+      location.href = "/payment";
   });
 }
 
 const UI = {};
 
-UI.paypalModal = (indexedCarts) => (e) => {
+UI.paypalModal = (indexedCarts) => () => {
   const checked = _.go(
     $.qsa(".product-checkbox"),
     _.filter(e => e.checked),
@@ -162,7 +163,7 @@ UI.paypalModal = (indexedCarts) => (e) => {
       // Call your server to set up the transaction
       createOrder: createOrder(indexedCarts),
       // Call your server to finalize the transaction
-      onApprove,
+      onApprove: onApprove(indexedCarts),
     }).render('#paypal-button-wrapper')
   );
 }
@@ -192,6 +193,14 @@ UI.paypalModal = (indexedCarts) => (e) => {
       $.find(".open-modal"),
       $.on("click", UI.paypalModal(indexedCarts)),
     );
+
+    _.go(
+      `<button class="test">test</button>`,
+      $.el,
+      $.appendTo($.qs('.cart-container')),
+      $.on("click", _ => $.post(`/api/payment/paypal/order/create`))
+    )
+
     const head = `
     <div class="cart__item">
       <div class="cart__item__col cart__item__checkbox cart__item__head">checkbox</div>
@@ -229,11 +238,18 @@ UI.paypalModal = (indexedCarts) => (e) => {
       $.delegate('change', ".item-count", function({ currentTarget }){
         const { value } = currentTarget;
         const { id } = currentTarget.dataset;
+        const countEl = _.go(
+          currentTarget,
+          $.closest(".cart__item"),
+          $.find(".cart__item__price")
+        );
+        const changedPrice = indexedCarts[id].productPrice * Number(value);
         _.goS(
           { _csrf:csrf, count: value },
           $.post(`/api/cart/${id}`),
           _.stopIf((res) => !res.ok),
-          _ => (indexedCarts[id].count = Number(value)),
+          _.tap(_ => (indexedCarts[id].count = Number(value))),
+          ({ ok }) => ok && (countEl.innerText = changedPrice)
         )
       })
     )

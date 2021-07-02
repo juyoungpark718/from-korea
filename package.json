@@ -25,7 +25,6 @@
     "node-sass": "^5.0.0",
     "nodemon": "^2.0.7",
     "puppeteer": "^9.1.1",
-    "simplecrawler": "^1.1.9",
     "uglify-js": "^3.13.3"
   }
 }

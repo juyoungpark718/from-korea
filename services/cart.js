@@ -1,11 +1,12 @@
 const _ = require("fxjs/Strict");
 const cartModel = require("../models/cart");
 
-const getCartsByUserId = (userId) => cartModel.findCarts({ userId });
+const getCartsByUserId = (userId) => cartModel.findCartsByUserId({ userId });
+
+const findCartsByIds = (ids) => cartModel.findCartsByIds(ids);
 
 const createCart = (cartInfo) => {
   const { productUrl, productId, productName, productThumbnail, productHash, productPrice, productOptions, userId, count } = cartInfo;
-  // const productHash = makeHash()
   return cartModel.createCart({
     productUrl,
     productId,
@@ -44,8 +45,12 @@ const createOrUpdateCart = async (product) => {
   return cart;
 }
 
+const deleteCarts = (ids) => cartModel.deleteCarts(ids);
+
 module.exports = {
   getCartsByUserId,
   createOrUpdateCart,
+  findCartsByIds,
   updateCart,
+  deleteCarts
 }
