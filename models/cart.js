@@ -1,8 +1,6 @@
 
 const _ = require("fxjs/Strict");
 
-FxSQL_DEBUG = true;
-
 const createCart = async ({ productUrl, productId, productName, productPrice, productThumbnail, productHash, productOptions, userId, count }) => {
   const { QUERY, COMMIT, ROLLBACK } = await TRANSACTION();
   try{
@@ -25,7 +23,7 @@ const createCart = async ({ productUrl, productId, productName, productPrice, pr
   }
 }
 
-const findCarts = async ({ userId }) => {
+const findCartsByUserId = async ({ userId }) => {
   try{
     const carts = await QUERY `SELECT * FROM carts WHERE ${EQ({ userId })}`;
     return carts;
@@ -43,6 +41,15 @@ const findCartByHash = async ({ userId, productHash }) => {
   }
 }
 
+const findCartsByIds = async (ids) => {
+  try{
+    const carts = await QUERY `SELECT * FROM carts WHERE ${IN('id', ids)}`;
+    return carts;
+  }catch(e){
+    return [];
+  }
+}
+
 const updateCart = async ({ id, count }) => {
   const { QUERY, COMMIT, ROLLBACK } = await TRANSACTION();
   try{
@@ -55,11 +62,25 @@ const updateCart = async ({ id, count }) => {
   }
 }
 
+const deleteCarts = async (ids) => {
+  const { QUERY, COMMIT, ROLLBACK } = await TRANSACTION();
+  try{
+    const deleted = await QUERY `DELETE FROM carts WHERE ${IN('id', ids)}`;
+    await COMMIT();
+    return deleted;
+  }catch(e){
+    await ROLLBACK();
+    return undefined;
+  }
+}
+
 
 
 module.exports = {
   createCart,
-  findCarts,
+  findCartsByUserId,
   findCartByHash,
-  updateCart
+  findCartsByIds,
+  updateCart,
+  deleteCarts
 }
